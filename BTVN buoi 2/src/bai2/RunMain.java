@@ -92,7 +92,7 @@ public class RunMain {
             System.out.println("Nhap phan tu can chen: ");
             int x = sc.nextInt();
 
-            for (int i = n; i > k; i--){
+            for (int i = n; i >= k; i--){
                 a[i] = a[i-1];
             }
             a[k-1] = x;
