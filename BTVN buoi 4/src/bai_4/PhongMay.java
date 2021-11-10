@@ -6,7 +6,7 @@ public class PhongMay {
     private String maPhong;
     private String tenPhong;
     private float dienTich;
-    private QuanLy x = new QuanLy();
+    private QuanLy x ;
     private May[] y;
     private int n;
     public void nhap(){
@@ -17,7 +17,7 @@ public class PhongMay {
         tenPhong = sc.nextLine();
         System.out.print("Nhap dien tich: ");
         dienTich = sc.nextFloat();
-//        QuanLy x = new QuanLy();
+         x = new QuanLy();
         x.nhap();
         System.out.print("Nhap so loai may: ");
         n = sc.nextInt();
