@@ -34,7 +34,6 @@ public class UserController {
     }
 
     public void writeUsersToFile(List<User> users, String filename) throws IOException {
-//        fileController.OpenFileToRead(filename); ??????Write
         fileController.OpenFileToWrite(filename);
         for(User user : users) {
             fileController.getPrintWriter().println(user.getIdUser() + "|" + user.getNameUser() + "|" + user.getPassword()+ "|" + user.getEmail() + "|" + user.getAddress()+ "|" + user.getName()+ "|" + user.getPhoneNumber()+ "|"+ user.getPermission()+ "|" + user.getDateOfBirth());

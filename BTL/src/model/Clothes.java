@@ -13,9 +13,10 @@ public class Clothes {
     public Clothes() {
     }
 
-    public Clothes(int id, String name, String color, String size, int price, String material, int quantily) {
+    public Clothes(int id, String name, int idTypeOfClother, String color, String size, int price, String material, int quantily) {
         this.id = id;
         this.name = name;
+        this.idTypeOfClother = idTypeOfClother;
         this.color = color;
         this.size = size;
         this.price = price;
@@ -37,6 +38,14 @@ public class Clothes {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getIdTypeOfClother() {
+        return idTypeOfClother;
+    }
+
+    public void setIdTypeOfClother(int idTypeOfClother) {
+        this.idTypeOfClother = idTypeOfClother;
     }
 
     public String getColor() {
@@ -79,16 +88,4 @@ public class Clothes {
         this.quantily = quantily;
     }
 
-    @Override
-    public String toString() {
-        return "model.Clothes{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", color='" + color + '\'' +
-                ", size='" + size + '\'' +
-                ", price=" + price +
-                ", material='" + material + '\'' +
-                ", quantily=" + quantily +
-                '}';
-    }
 }
