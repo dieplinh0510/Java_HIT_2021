@@ -98,5 +98,17 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "idUser=" + idUser +
+                ", nameUser='" + nameUser + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", permission='" + permission + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                '}';
+    }
 }

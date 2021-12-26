@@ -20,7 +20,7 @@ public class ClotherStoreController {
         this.fileController = fileController;
     }
     public List<Clothes> readClothesStoreFromFile(String filename) throws IOException {
-        fileController.OpenFileToWrite(filename);
+        fileController.OpenFileToRead(filename);
         List<Clothes> clothes = new ArrayList<>();
 
         while(fileController.scanner.hasNext()) {
@@ -34,13 +34,15 @@ public class ClotherStoreController {
         return clothes;
     }
 
-    public void writeClothesStoreToFile(List<Clothes> clothes, String filename) throws IOException {
+    public List<Clothes> writeClothesStoreToFile(List<Clothes> clothes, String filename) throws IOException {
         fileController.OpenFileToWrite(filename);
         for(Clothes clothe : clothes) {
             fileController.getPrintWriter().println(clothe.getId() + "|" + clothe.getName() + "|" + clothe.getIdTypeOfClother()+ "|" + clothe.getColor() + "|" + clothe.getSize()+ "|" + clothe.getPrice()+ "|" + clothe.getMaterial()+ "|"+ clothe.getQuantily());
         }
 
-        fileController.CloseFileAfterWrite(filename);
+        fileController.CloseFileAfterWrite();
+        return clothes;
     }
+
 
 }

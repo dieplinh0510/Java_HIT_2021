@@ -88,4 +88,17 @@ public class Clothes {
         this.quantily = quantily;
     }
 
+    @Override
+    public String toString() {
+        return "Clothes{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", idTypeOfClother=" + idTypeOfClother +
+                ", color='" + color + '\'' +
+                ", size='" + size + '\'' +
+                ", price=" + price +
+                ", material='" + material + '\'' +
+                ", quantily=" + quantily +
+                '}';
+    }
 }

@@ -1,17 +1,18 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Bill {
     private int idBill;
     private int idUser;
-    private ArrayList <Clothes> clothes = new ArrayList<>();
+    private List<Clothes> clothes = new ArrayList<>();
     private double discount;
 
     public Bill() {
     }
 
-    public Bill(int idBill, int idUser, ArrayList<Clothes> clothes, double discount) {
+    public Bill(int idBill, int idUser, List<Clothes> clothes, double discount) {
         this.idBill = idBill;
         this.idUser = idUser;
         this.clothes = clothes;
@@ -34,11 +35,11 @@ public class Bill {
         this.idUser = idUser;
     }
 
-    public ArrayList<Clothes> getClothes() {
+    public List<Clothes> getClothes() {
         return clothes;
     }
 
-    public void setClothes(ArrayList<Clothes> clothes) {
+    public void setClothes(List<Clothes> clothes) {
         this.clothes = clothes;
     }
 
@@ -48,5 +49,15 @@ public class Bill {
 
     public void setDiscount(double discount) {
         this.discount = discount;
+    }
+
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "idBill=" + idBill +
+                ", idUser=" + idUser +
+                ", clothes=" + clothes +
+                ", discount=" + discount +
+                '}';
     }
 }

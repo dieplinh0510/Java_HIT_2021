@@ -49,6 +49,6 @@ public class BillController {
             fileController.getPrintWriter().println(bill.getIdBill() + "|" + bill.getIdUser() + "|" + bill.getClothes()+ "|" + bill.getDiscount() );
         }
 
-        fileController.CloseFileAfterWrite(filename);
+        fileController.CloseFileAfterWrite();
     }
 }

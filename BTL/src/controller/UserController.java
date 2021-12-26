@@ -4,6 +4,8 @@ import model.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class UserController {
@@ -19,7 +21,8 @@ public class UserController {
         this.fileController = fileController;
     }
     public List<User> readUsersFromFile(String filename) throws IOException {
-        fileController.OpenFileToWrite(filename);
+//        fileController.OpenFileToWrite(filename);?????
+        fileController.OpenFileToRead(filename);
         List<User> users = new ArrayList<>();
 
         while(fileController.scanner.hasNext()) {
@@ -33,13 +36,26 @@ public class UserController {
         return users;
     }
 
-    public void writeUsersToFile(List<User> users, String filename) throws IOException {
+    public List<User> writeUsersToFile(List<User> users, String filename) throws IOException {
         fileController.OpenFileToWrite(filename);
         for(User user : users) {
             fileController.getPrintWriter().println(user.getIdUser() + "|" + user.getNameUser() + "|" + user.getPassword()+ "|" + user.getEmail() + "|" + user.getAddress()+ "|" + user.getName()+ "|" + user.getPhoneNumber()+ "|"+ user.getPermission()+ "|" + user.getDateOfBirth());
         }
 
-        fileController.CloseFileAfterWrite(filename);
+        fileController.CloseFileAfterWrite();
+        return users;
     }
+    public void closeUsersAfterRead(String file){
+        fileController.CloseFileAfterWrite();
+    }
+
+    public boolean isBirthday(User user){
+        Calendar cal = Calendar.getInstance();
+        String[] data = user.getDateOfBirth().split("\\/");
+        return Integer.parseInt(data[0]) == cal.get(Calendar.DAY_OF_MONTH)
+                && Integer.parseInt(data[1]) == cal.get(Calendar.MONTH);
+
+    }
+
 
 }

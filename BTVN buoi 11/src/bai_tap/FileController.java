@@ -1,4 +1,4 @@
-package controller;
+package bai_tap;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -55,3 +55,4 @@ public class FileController {
     }
 
 }
+
