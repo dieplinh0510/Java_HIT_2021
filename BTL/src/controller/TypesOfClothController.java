@@ -39,6 +39,6 @@ public class TypesOfClothController {
             fileController.getPrintWriter().println(typesOfCloth.getId() + "|" + typesOfCloth.getName());
         }
 
-        fileController.CloseFileAfterWrite(filename);
+        fileController.CloseFileAfterWrite();
     }
 }

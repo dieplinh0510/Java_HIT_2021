@@ -1,15 +1,18 @@
 package controller;
 
+import common.Constants;
 import model.Bill;
 import model.Clothes;
+import model.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class BillController {
-    private Bill bill= new Bill();
-    private FileController fileController = new FileController();
+    private  Bill bill= new Bill();
+    private  FileController fileController = new FileController();
 
     public BillController() {
 
@@ -19,36 +22,154 @@ public class BillController {
         this.bill = bill;
         this.fileController = fileController;
     }
-    public List<Bill> readBillFromFile(String filename) throws IOException {
-        fileController.OpenFileToWrite(filename);
+    public  List<Bill> readBillFromFile(String filename) throws IOException {
+        fileController.OpenFileToRead(filename);
         List<Bill>  bills = new ArrayList<>();
-
+        ClotherStoreController clotherStoreController = new ClotherStoreController();
         while(fileController.scanner.hasNext()) {
             String data = fileController.scanner.nextLine();
             String[] a = data.split("\\|");
             ArrayList<Clothes> clothes = new ArrayList<>();
-            for (int i=0; i<a.length; i++){
-                clothes.add(new Clothes(Integer.parseInt(a[0]), a[1], Integer.parseInt(a[2]), a[3], a[4],Integer.parseInt(a[5]), a[6], Integer.parseInt(a[7])));
+            for (int i=2; i<a.length-2; i++){
+                clothes.add(clotherStoreController.getClotherBuyId(Integer.parseInt(a[i])));
             }
-            bills.add(new Bill(Integer.parseInt(a[0]), Integer.parseInt(a[1]), clothes, Double.parseDouble(a[3])));
+            bills.add(new Bill(Integer.parseInt(a[0]), Integer.parseInt(a[1]), clothes, Double.parseDouble(a[a.length-2])));
         }
 
         fileController.CloseFileAfterRead(filename);
 
         return bills;
     }
+    public  Double getTurnover() throws IOException {
+        fileController.OpenFileToRead(Constants.BILL_FILE);
+        Double sum=0.0;
+        while (fileController.scanner.hasNext()){
+            String data = fileController.scanner.nextLine();
+            String[] datas = data.split("\\|");
+            sum += Double.parseDouble(datas[datas.length-1]);
+        }
+
+        fileController.CloseFileAfterRead(Constants.BILL_FILE);
+        return sum;
+    }
+    public  Integer getTotalClothes() throws IOException {
+        List<Bill> bills = readBillFromFile(Constants.BILL_FILE);
+        int sum = bills.stream().mapToInt(item -> item.getClothes().size()).sum();
+        return sum;
+    }
 
 
-
-
-
-
-    public void writeBillToFile(List<Bill> bills, String filename) throws IOException {
+    public  void writeBillToFile(List<Bill> bills, String filename) throws IOException {
         fileController.OpenFileToWrite(filename);
+        Double thanhtien = 0.0;
         for(Bill bill : bills) {
-            fileController.getPrintWriter().println(bill.getIdBill() + "|" + bill.getIdUser() + "|" + bill.getClothes()+ "|" + bill.getDiscount() );
+            String s = "";
+            for (int j = 0; j<bill.getClothes().size(); j++){
+                s+=bill.getClothes().get(j).getId() + "|";
+                thanhtien+=bill.getClothes().get(j).getPrice();
+            }
+            fileController.getPrintWriter().println(bill.getIdBill() + "|" + bill.getIdUser() + "|" + s +
+                    bill.getDiscount() + "|" + thanhtien);
         }
 
         fileController.CloseFileAfterWrite();
+    }
+
+    public  void viewAllBill(List<Bill> bills) {
+        System.out.println("Thong tin cac hoa don cua cua hang: ");
+        for (int i = 0; i < bills.size(); i++) {
+            System.out.println(bills.get(i));
+        }
+    }
+
+    public  void viewTurnover(List<Bill> bills) throws IOException {
+
+        System.out.println("So san pham da ban: " + getTotalClothes());
+
+        System.out.println("Tong tien ban duoc: " + getTurnover());
+
+
+    }
+
+    public  void buyProduct() throws IOException {
+        ClotherStoreController clotherStoreController = new ClotherStoreController();
+        UserController userController = new UserController();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Cac san pham cua hang con: ");
+        List<Clothes> clothes= clotherStoreController.readClothesStoreFromFile(Constants.CLOTHES_STORE_FILE);
+        List<User> user_curs = userController.readUsersFromFile(Constants.USER_CUR_FILE);
+        User cur_user = user_curs.get(0);
+        clotherStoreController.viewProduct(clothes);
+        List<Clothes> clothesBuy = new ArrayList<>();
+        Clothes clothes1;
+        int idProductBuy;
+
+        do {
+            System.out.println("Nhap ma san pham ban muon mua (-1 la thoat): "); idProductBuy = scanner.nextInt();
+            System.out.println("Nhap so luong san pham ban muon mua: "); int quanlityProductBuy = scanner.nextInt();
+            for (int i=0; i<clothes.size(); i++){
+                if (idProductBuy == clothes.get(i).getId()){
+                    if (quanlityProductBuy<=clothes.get(i).getQuantily() && quanlityProductBuy>0){
+                        clothes.get(i).setQuantily(clothes.get(i).getQuantily()-quanlityProductBuy);
+                        clothes1 = clothes.get(i);
+                        for (int j=0; j<quanlityProductBuy; j++){
+
+                            clothesBuy.add(clothes1);
+                        }
+                        clotherStoreController.writeClothesStoreToFile(clothes, Constants.CLOTHES_STORE_FILE);
+                    } else {
+                        System.out.println("San pham trong kho khong du so luong ban muon.");
+                    }
+                    break;
+                }
+            }
+        } while (idProductBuy!=-1);
+
+        List<Bill> bills = readBillFromFile(Constants.BILL_FILE);
+        Bill bill = new Bill(
+                bills.size()+1,
+                cur_user.getIdUser(),
+                clothesBuy,
+                userController.isBirthday(cur_user) ? 0 : Constants.DISCOUNT_BIRTHDAY
+        );
+
+        bills.add(bill);
+
+        System.out.println(bill.toString());
+
+        writeBillToFile(bills, Constants.BILL_FILE);
+
+
+    }
+
+    public  void viewBill(List<Bill> bills) throws IOException {
+        UserController userController = new UserController();
+        List<User> user_curs = userController.readUsersFromFile(Constants.USER_CUR_FILE);
+        User cur_user = user_curs.get(0);
+        System.out.println("Thong tin hoa don: ");
+        for (int i=0; i<bills.size(); i++){
+            if (cur_user.getIdUser() == bills.get(i).getIdUser()){
+                System.out.println(bills.get(i));
+            }
+        }
+    }
+
+    public  void qualityEvalution(List<Bill> bills) throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        UserController userController = new UserController();
+        List<User> user_curs = userController.readUsersFromFile(Constants.USER_CUR_FILE);
+        User cur_user = user_curs.get(0);
+        boolean ok = false;
+        for (int i=0; i<bills.size(); i++){
+            if (cur_user.getIdUser()==bills.get(i).getIdUser()){
+                System.out.println("Danh gia cua ban ve san pham cua cua hang: ");
+                String  evaluate = scanner.nextLine();
+                System.out.println("Cam on ban da mua san pham o cua hang cua chung toi.");
+                ok = true; break;
+            }
+        }
+        if (!ok){
+            System.out.println("Ban chua mua san pham cua chung toi, nen ban khong the danh gia san pham nay.");
+        }
     }
 }
