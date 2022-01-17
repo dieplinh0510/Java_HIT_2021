@@ -98,11 +98,24 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
+
+    public void display(){
+        System.out.printf("\t\t\t\t\tId user       : " + idUser + "\n");
+        System.out.printf("\t\t\t\t\tName user     : " + nameUser + "\n");
+        System.out.printf("\t\t\t\t\tEmail         : " + email + "\n");
+        System.out.printf("\t\t\t\t\tAddress       : " + address + "\n");
+        System.out.printf("\t\t\t\t\tName          : " + name + "\n");
+        System.out.printf("\t\t\t\t\tPhone number  : " + phoneNumber + "\n");
+        System.out.printf("\t\t\t\t\tPermission    : " + permission + "\n");
+        System.out.printf("\t\t\t\t\tDate of birth : " + dateOfBirth + "\n\n");
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "idUser=" + idUser +
                 ", nameUser='" + nameUser + '\'' +
+                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", name='" + name + '\'' +

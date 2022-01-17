@@ -60,4 +60,12 @@ public class Bill {
                 ", discount=" + discount +
                 '}';
     }
+
+    public void display(){
+        System.out.println("\t\t\t\t\tId bill  : " + idBill);
+        System.out.println("\t\t\t\t\tId user  : " + idUser);
+        System.out.println("\t\t\t\t\tClothes  : " + clothes);
+        System.out.println("\t\t\t\t\tDiscount : " + discount);
+        System.out.println();
+    }
 }

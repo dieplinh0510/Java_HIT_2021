@@ -76,17 +76,17 @@ public class BillController {
     }
 
     public  void viewAllBill(List<Bill> bills) {
-        System.out.println("Thong tin cac hoa don cua cua hang: ");
+        System.out.println("Information of store bills: ");
         for (int i = 0; i < bills.size(); i++) {
-            System.out.println(bills.get(i));
+            bills.get(i).display();
         }
     }
 
     public  void viewTurnover(List<Bill> bills) throws IOException {
 
-        System.out.println("So san pham da ban: " + getTotalClothes());
+        System.out.println("Number of products sold: " + getTotalClothes());
 
-        System.out.println("Tong tien ban duoc: " + getTurnover());
+        System.out.println("Total revenue: " + getTurnover());
 
 
     }
@@ -95,7 +95,7 @@ public class BillController {
         ClotherStoreController clotherStoreController = new ClotherStoreController();
         UserController userController = new UserController();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Cac san pham cua hang con: ");
+        System.out.println("Other store products: ");
         List<Clothes> clothes= clotherStoreController.readClothesStoreFromFile(Constants.CLOTHES_STORE_FILE);
         List<User> user_curs = userController.readUsersFromFile(Constants.USER_CUR_FILE);
         User cur_user = user_curs.get(0);
@@ -105,8 +105,8 @@ public class BillController {
         int idProductBuy;
 
         do {
-            System.out.println("Nhap ma san pham ban muon mua (-1 la thoat): "); idProductBuy = scanner.nextInt();
-            System.out.println("Nhap so luong san pham ban muon mua: "); int quanlityProductBuy = scanner.nextInt();
+            System.out.println("Enter the product id you want to buy(-1 is exit) "); idProductBuy = scanner.nextInt();
+            System.out.println("Enter the number of products you want to buy: "); int quanlityProductBuy = scanner.nextInt();
             for (int i=0; i<clothes.size(); i++){
                 if (idProductBuy == clothes.get(i).getId()){
                     if (quanlityProductBuy<=clothes.get(i).getQuantily() && quanlityProductBuy>0){
@@ -118,7 +118,7 @@ public class BillController {
                         }
                         clotherStoreController.writeClothesStoreToFile(clothes, Constants.CLOTHES_STORE_FILE);
                     } else {
-                        System.out.println("San pham trong kho khong du so luong ban muon.");
+                        System.out.println("The product in stock does not have the quantity you want to buy.");
                     }
                     break;
                 }
@@ -130,12 +130,13 @@ public class BillController {
                 bills.size()+1,
                 cur_user.getIdUser(),
                 clothesBuy,
-                userController.isBirthday(cur_user) ? 0 : Constants.DISCOUNT_BIRTHDAY
+                userController.isBirthday(cur_user) ? Constants.DISCOUNT_BIRTHDAY : 0
         );
+        System.out.println(userController.isBirthday(cur_user));
 
         bills.add(bill);
 
-        System.out.println(bill.toString());
+        bill.display();
 
         writeBillToFile(bills, Constants.BILL_FILE);
 
@@ -146,10 +147,10 @@ public class BillController {
         UserController userController = new UserController();
         List<User> user_curs = userController.readUsersFromFile(Constants.USER_CUR_FILE);
         User cur_user = user_curs.get(0);
-        System.out.println("Thong tin hoa don: ");
+        System.out.println("Bill information: ");
         for (int i=0; i<bills.size(); i++){
             if (cur_user.getIdUser() == bills.get(i).getIdUser()){
-                System.out.println(bills.get(i));
+                bills.get(i).display();
             }
         }
     }
@@ -162,14 +163,14 @@ public class BillController {
         boolean ok = false;
         for (int i=0; i<bills.size(); i++){
             if (cur_user.getIdUser()==bills.get(i).getIdUser()){
-                System.out.println("Danh gia cua ban ve san pham cua cua hang: ");
+                System.out.println("Your rating of the store's product: ");
                 String  evaluate = scanner.nextLine();
-                System.out.println("Cam on ban da mua san pham o cua hang cua chung toi.");
+                System.out.println("Thank you for purchasing products in our store.");
                 ok = true; break;
             }
         }
         if (!ok){
-            System.out.println("Ban chua mua san pham cua chung toi, nen ban khong the danh gia san pham nay.");
+            System.out.println("You have not purchased our product so you cannot rate it.");
         }
     }
 }

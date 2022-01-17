@@ -57,9 +57,9 @@ public class UserController {
 
     public  void viewUser(List<User> users) {
 
-        System.out.println("Thong tin cac nguoi dung cua cua hang: ");
+        System.out.println("Store user information: ");
         for (int i = 0; i < users.size(); i++) {
-            System.out.println(users.get(i));
+            users.get(i).display();
         }
     }
 
@@ -69,24 +69,46 @@ public class UserController {
         int n;
 
         do{
-            System.out.println("Ban muon thay doi: ");
-            System.out.println("1. Thay doi mat khau. ");
-            System.out.println("2. Thay doi email. ");
-            System.out.println("3. Thay doi dia chi nhan hang. ");
-            System.out.println("4. Thay doi ten nguoi nhan hang. ");
-            System.out.println("5. Thay doi so dien thoai nguoi nhan hang.");
-            System.out.println("0. Thoat.");
-            System.out.println("Nhap lua chon cua ban: ");
+            System.out.println("You want to change: ");
+            System.out.println("1. Change your password. ");
+            System.out.println("2. Change your e-mail. ");
+            System.out.println("3. Change your address. ");
+            System.out.println("4. Change your name. ");
+            System.out.println("5. Change your phone number.");
+            System.out.println("0. Exit.");
+            System.out.println("Enter your selection: ");
             n = scanner.nextInt();
 
             switch (n){
-                case 1: repairPassword(user_cur); break;
-                case 2: repairEmail(user_cur); break;
-                case 3: repairAddress(user_cur); break;
-                case 4: repairName(user_cur); break;
-                case 5: repairPhone(user_cur); break;
+                case 1:
+                    repairPassword(user_cur);
+                    System.out.println("<=====================>");
+                    System.out.println();
+                    break;
+                case 2:
+                    repairEmail(user_cur);
+                    System.out.println("<=====================>");
+                    System.out.println();
+                    break;
+                case 3:
+                    repairAddress(user_cur);
+                    System.out.println("<=====================>");
+                    System.out.println();
+                    break;
+                case 4:
+                    repairName(user_cur);
+                    System.out.println("<=====================>");
+                    System.out.println();
+                    break;
+                case 5:
+                    repairPhone(user_cur);
+                    System.out.println("<=====================>");
+                    System.out.println();
+                    break;
                 default:
-                    System.out.println("Khong co lua chon nay.");
+                    System.out.println("This option is not available.");
+                    System.out.println("<=====================>");
+                    System.out.println();
             }
         }while (n!=0);
     }
@@ -95,12 +117,12 @@ public class UserController {
         Scanner scanner = new Scanner(System.in);
         List<User> user =readUsersFromFile(Constants.USER_CUR_FILE);
         boolean check;
-        System.out.println("Nhap mat khau cu: ");
+        System.out.println("Enter old password: ");
         String  passwordOld = scanner.nextLine();
 
         if (user.get(0).getPassword().compareTo(passwordOld)==0){
             do{
-                System.out.println("Nhap mat khau moi: "); String passwordNew = scanner.nextLine();
+                System.out.println("Enter new password: "); String passwordNew = scanner.nextLine();
 
                 check=Constants.regexPassword.matcher(passwordNew).find();
                 if (check){
@@ -115,13 +137,13 @@ public class UserController {
                             writeUsersToFile(users1, Constants.USER_FILE);
                         }
                     }
-                    System.out.println("Thay doi mat khau thanh cong.");
+                    System.out.println("Change password successfully.");
                 } else {
-                    System.out.println("Mat khau khong hop le. Nhap lai mat khau.");
+                    System.out.println("Invalid password. Enter the password: ");
                 }
             }while (!check);
 
-        } else System.out.println("Mat khau khong dung. Moi ban nhap lai lua chon.");
+        } else System.out.println("Password is not correct, please re-enter your choice.");
     }
 
     public  void repairEmail(List<User> users) throws IOException {
@@ -129,10 +151,10 @@ public class UserController {
         Scanner scanner = new Scanner(System.in);
         do{
 
-            System.out.println("Nhap email moi: "); String emailNew = scanner.nextLine();
+            System.out.println("Change new email: "); String emailNew = scanner.nextLine();
             check=Constants.regexEmail.matcher(emailNew).find();
             if (check){
-                users.get(0).setPassword(emailNew);
+                users.get(0).setEmail(emailNew);
                 writeUsersToFile(users, Constants.USER_CUR_FILE);
 
                 // mo file users.dat de thay doi email
@@ -143,9 +165,9 @@ public class UserController {
                         writeUsersToFile(users1, Constants.USER_FILE);
                     }
                 }
-                System.out.println("Thay doi email thanh cong.");
+                System.out.println("Change email successfully.");
             } else {
-                System.out.println("Enail khong hop le. Moi nhap lai email.");
+                System.out.println("Invalid email. Enter the email: ");
             }
 
 
@@ -155,7 +177,7 @@ public class UserController {
 
     public  void repairAddress(List<User> users) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Nhap dia chi moi: "); String addressNew = scanner.nextLine();
+        System.out.println("Enter new address: "); String addressNew = scanner.nextLine();
 
         users.get(0).setAddress(addressNew);
         writeUsersToFile(users, Constants.USER_CUR_FILE);
@@ -169,7 +191,7 @@ public class UserController {
             }
         }
 
-        System.out.println("Thay doi dia chi thanh cong.");
+        System.out.println("Change address successfully.");
     }
 
     public  void repairName(List<User> users) throws IOException {
@@ -177,13 +199,13 @@ public class UserController {
         Scanner scanner = new Scanner(System.in);
         do{
 
-            System.out.println("Nhap ten moi: "); String nameNew = scanner.nextLine();
+            System.out.println("Enter new name user: "); String nameNew = scanner.nextLine();
             check = Constants.regexUsername.matcher(nameNew).find();
             if (check){
                 users.get(0).setNameUser(nameNew);
                 writeUsersToFile(users, Constants.USER_CUR_FILE);
 
-                // mo file users.dat de thay doi name user
+                // mo file users.dat de thay doi name
                 List<User> users1 = readUsersFromFile(Constants.USER_FILE);
                 for (int i=0; i<users1.size(); i++){
                     if (users1.get(i).getIdUser()==users.get(0).getIdUser()){
@@ -191,9 +213,9 @@ public class UserController {
                         writeUsersToFile(users1, Constants.USER_FILE);
                     }
                 }
-                System.out.println("Thay doi ten nguoi dung thanh cong.");
+                System.out.println("Change name user successfully.");
             } else {
-                System.out.println("Ten nguoi dung khong hop le. Moi nhap lai ten nguoi dung.");
+                System.out.println("Invalid nameuser. Enter the nameuser: ");
             }
 
 
@@ -205,7 +227,7 @@ public class UserController {
         Scanner scanner = new Scanner(System.in);
         do{
 
-            System.out.println("Nhap so dien thoai moi: "); String phoneNew = scanner.nextLine();
+            System.out.println("Enter new phone number: "); String phoneNew = scanner.nextLine();
             check = Constants.regexPhone.matcher(phoneNew).find();
             if (check){
                 users.get(0).setPhoneNumber(phoneNew);
@@ -219,9 +241,9 @@ public class UserController {
                         writeUsersToFile(users1, Constants.USER_FILE);
                     }
                 }
-                System.out.println("Thay doi so dien thoai thanh cong.");
+                System.out.println("Change phone number successfully.");
             } else {
-                System.out.println("So dien thoai khong hop le. Moi nhap lai so dien thoai.");
+                System.out.println("Invalid phone number. Enter the phone number:");
             }
 
 
@@ -232,7 +254,7 @@ public class UserController {
 
         List<User> users1 = readUsersFromFile(Constants.USER_FILE);
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Nhap ma nguoi ban muon chinh sua quyen: ");
+        System.out.println("Enter the user id you want to edit permissions: ");
         int idRepair = scanner.nextInt();
         boolean ok= false;
         for (int i=0; i<users.size(); i++){
@@ -246,8 +268,8 @@ public class UserController {
                 writeUsersToFile(users, Constants.USER_FILE);
             }
         }
-        if (ok) System.out.println("Thay doi quyen thanh cong.");
-        else System.out.println("Ma nguoi ban muon chinh sua khong dung. Moi nhap lai lua chon.");
+        if (ok) System.out.println("Change permissions successfully.");
+        else System.out.println("Id user is incorrect");
     }
 
     public  void logout() throws IOException {
@@ -255,7 +277,7 @@ public class UserController {
         User cur_user = cur_users.get(0);
         FileWriter fileWriter = new FileWriter(Constants.USER_CUR_FILE, false);
         cur_user = null;
-        System.out.println("Ban da dang xuat thanh cong.");
+        System.out.println("You have successfully logged out.");
     }
 
 

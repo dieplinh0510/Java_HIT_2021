@@ -7,11 +7,10 @@ import model.Clothes;
 import model.TypesOfCloth;
 import model.User;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLOutput;
+
 import java.util.*;
-import java.util.regex.Pattern;
+
 
 public class RunMain {
     private static User cur_user = null;
@@ -49,24 +48,36 @@ public class RunMain {
 
             int x;
             do {
-                System.out.println("1. Dang nhap tai khoan");
-                System.out.println("2. Dang ki tai khoan");
-                System.out.println("3. Quen mat khau");
-                System.out.println("0. Thoat");
-                System.out.println("Nhap lua chon cua ban: ");
+                System.out.println("1. Account Login.");
+                System.out.println("2. Register an account.");
+                System.out.println("3. Forgot password.");
+                System.out.println("0. Exit.");
+                System.out.println("Enter your selection: ");
                 x = scanner.nextInt();
                 switch (x) {
                     case 1:
                         logIn();
+                        System.out.println();
+                        System.out.println("<==========================================>");
+                        System.out.println();
                         break;
                     case 2:
                         registration();
+                        System.out.println();
+                        System.out.println("<==========================================>");
+                        System.out.println();
                         break;
                     case 3:
                         forgotPassword();
+                        System.out.println();
+                        System.out.println("<==========================================>");
+                        System.out.println();
                         break;
                     default:
-                        System.out.println("Khong co lua chon nay.");
+                        System.out.println("This option is not available.");
+                        System.out.println();
+                        System.out.println("<==========================================>");
+                        System.out.println();
                         break;
                 }
             } while (x != 0);
@@ -91,76 +102,77 @@ public class RunMain {
 
         do {
             scanner.nextLine();
-            System.out.println("Nhap ten nguoi dung: ");
+            System.out.println("Enter username: ");
             String nameUserNew = scanner.nextLine();
             check = Constants.regexUsername.matcher(nameUserNew).find();
             if (check) {
                 user.setNameUser(nameUserNew);
             } else {
-                System.out.println("Ten nguoi dung cua ban khong hop le, moi nhap lai.");
+                System.out.println("Your username is not valid, please re-enter.");
             }
         } while (!check);
 
         do {
-            System.out.println("Nhap mat khau: ");
+            System.out.println("Enter password: ");
             String passwordNew = scanner.nextLine();
             check = Constants.regexPassword.matcher(passwordNew).find();
             if (check) {
                 user.setPassword(passwordNew);
             } else {
-                System.out.println("Mat khau khong hop le, moi nhap lai.");
+                System.out.println("Invalid password, please re-enter.");
             }
         } while (!check);
 
         do {
-            System.out.println("Nhap email: ");
+            System.out.println("Enter email: ");
             String emailNew = scanner.nextLine();
             check = Constants.regexEmail.matcher(emailNew).find();
             if (check) {
                 user.setEmail(emailNew);
             } else {
-                System.out.println("Dia chi email khong hop le, moi nhap lai.");
+                System.out.println("Invalid email address, please re-enter.");
             }
         } while (!check);
 
-        System.out.println("Nhap dia chi: ");
+        System.out.println("Enter address:  ");
         String addressNew = scanner.nextLine();
         user.setAddress(addressNew);
 
-        System.out.println("Nhap ten: ");
+        System.out.println("Enter name: ");
         String nameNew = scanner.nextLine();
         user.setName(nameNew);
 
         do {
-            System.out.println("Nhap so dien thoai: ");
+            System.out.println("Enter phone number: ");
             String phoneNew = scanner.nextLine();
             check = Constants.regexPhone.matcher(phoneNew).find();
             if (check) {
                 user.setPhoneNumber(phoneNew);
             } else {
-                System.out.println("So dien thoai khong hop le, moi nhap lai.");
+                System.out.println("Invalid phone number, please re-enter.");
             }
         } while (!check);
 
         String permissionNew = "customer";
         user.setPermission(permissionNew);
 
-        System.out.println("Nhap ngay sinh: ");
+        System.out.println("Enter date of birth: ");
         String dateNew = scanner.nextLine();
         user.setDateOfBirth(dateNew);
         users.add(user);
         users1.add(user);
         userController.writeUsersToFile(users, Constants.USER_FILE);
         userController.writeUsersToFile(users1, Constants.USER_CUR_FILE);
+        System.out.println("Account successfully created\n");
         whatUserDo();
     }
 
     public static void forgotPassword() throws IOException {
         List<User> users = userController.readUsersFromFile(Constants.USER_FILE);
         scanner.nextLine();
-        System.out.println("Nhap username cua ban: ");
+        System.out.println("Enter your user: ");
         String userName = scanner.nextLine();
-        System.out.println("Nhap email cua ban: ");
+        System.out.println("Enter your email: ");
         String email = scanner.nextLine();
         int value = 0;
         boolean ok = false;
@@ -170,21 +182,21 @@ public class RunMain {
                 pass = users.get(i).getPassword();
                 Random generator = new Random();
                 value = generator.nextInt((999999 - 100000) + 1) + 100000;
-                System.out.println("Ma lay lai mat khau la: " + value);
+                System.out.println("Password reset code is: " + value);
                 ok = true;
                 break;
             }
         }
         if (ok == true) {
-            System.out.println("Nhap ma xac nhan: ");
+            System.out.println("Enter the confirmation code: ");
             int ma = scanner.nextInt();
             if (ma == value && value != 0) {
-                System.out.println("Mat khau cua ban la: " + pass);
+                System.out.println("Your password is: " + pass);
             } else {
-                System.out.println("Ma xac nhan cua ban khong dung.");
+                System.out.println("Your verification code is incorrect.");
             }
         } else {
-            System.out.println("Username va Email cua ban khong dung.");
+            System.out.println("Your username and email are incorrect.");
         }
     }
 
@@ -192,9 +204,9 @@ public class RunMain {
         String userNameInput;
         String passwordInput;
         scanner.nextLine();
-        System.out.println("Vui long nhap username cua ban: ");
+        System.out.println("Enter your user: ");
         userNameInput = scanner.nextLine();
-        System.out.println("Vui long nhap password cua ban: ");
+        System.out.println("Enter your password: ");
         passwordInput = scanner.nextLine();
         List<User> users = userController.readUsersFromFile(Constants.USER_FILE);
         boolean ok = false;
@@ -202,7 +214,7 @@ public class RunMain {
             if (users.get(i).getNameUser().compareTo(userNameInput) == 0 && users.get(i).getPassword().compareTo(passwordInput) == 0) {
                 ok = true;
                 cur_user = users.get(i);
-                System.out.println("Ban da dang nhap thanh cong. Ban la " + users.get(i).getPermission());
+                System.out.println("Successful login. You are " + users.get(i).getPermission());
 
                 List<User> user_cur = new ArrayList<>();
                 user_cur.add(users.get(i));
@@ -217,7 +229,7 @@ public class RunMain {
         }
 
         if (ok == false) {
-            System.out.println("Tai khoan cua ban khong dung. Moi nhap lai tai khoan: ");
+            System.out.println("Your account is incorrect. Please re-enter: ");
             logIn();
         }
 
@@ -229,21 +241,21 @@ public class RunMain {
 
         int x;
         do {
-            System.out.println("Cac cong viec ma ban co the lam: ");
-            System.out.println("1. Xem cac san pham cua cua hang.");
-            System.out.println("2. Xem thong tin cac khach hang.");
-            System.out.println("3. Xem tat ca cac hoa don.");
-            System.out.println("4. Sap xem san pham tang dan theo gia tien.");
-            System.out.println("5. Tim kiem san pham.");
-            System.out.println("6. Them san pham vao cua hang.");
-            System.out.println("7. Sua gia cua san pham.");
-            System.out.println("8. Xoa san pham khoi cua hang.");
-            System.out.println("9. Thay doi thong tin ca nhan.");
-            System.out.println("10. Chinh sua quyen cua nguoi khac.");
-            System.out.println("11. Xem doanh thu cua cua hang.");
-            System.out.println("12. Dang xuat.");
-            System.out.println("0. Thoat");
-            System.out.println("Moi nhap lua chon cua ban: ");
+            System.out.println("Jobs you can do : ");
+            System.out.println("1. See the store's products.");
+            System.out.println("2. View customer information.");
+            System.out.println("3. View all bills.");
+            System.out.println("4. Sort products in ascending order by price.");
+            System.out.println("5. Search product.");
+            System.out.println("6. Add products to the store.");
+            System.out.println("7. Repair the price of the product.");
+            System.out.println("8. Delete product from store.");
+            System.out.println("9. Change personal information.");
+            System.out.println("10. Edit other people's rights.");
+            System.out.println("11. See the store's sales.");
+            System.out.println("12. Logout.");
+            System.out.println("0. Exit");
+            System.out.println("\nEnter your selection: ");
             x = scanner.nextInt();
             List<Clothes> clothes = clotherStoreController.readClothesStoreFromFile(Constants.CLOTHES_STORE_FILE);
 
@@ -254,65 +266,89 @@ public class RunMain {
             switch (x) {
                 case 1:
                     clotherStoreController.viewProduct(clothes);
-                    System.out.println("<===========>");
+                    System.out.println();
+                    System.out.println("<====================================>");
+                    System.out.println();
                     break;
 
                 case 2:
 
                     userController.viewUser(users);
-                    System.out.println("<===========>");
+                    System.out.println();
+                    System.out.println("<====================================>");
+                    System.out.println();
                     break;
 
                 case 3:
 
                     billController.viewAllBill(bills);
-                    System.out.println("<===========>");
+                    System.out.println();
+                    System.out.println("<====================================>");
+                    System.out.println();
                     break;
 
                 case 4:
 
                     clotherStoreController.sortProductWithPrice(clothes);
-                    System.out.println("<===========>");
+                    System.out.println();
+                    System.out.println("<====================================>");
+                    System.out.println();
                     break;
 
                 case 5:
                     clotherStoreController.findProduct();
-                    System.out.println("<===========>");
+                    System.out.println();
+                    System.out.println("<====================================>");
+                    System.out.println();
                     break;
 
                 case 6:
                     clotherStoreController.addProduct();
-                    System.out.println("<===========>");
+                    System.out.println();
+                    System.out.println("<====================================>");
+                    System.out.println();
                     break;
 
                 case 7:
                     clotherStoreController.repairPriceofProduct(clothes);
-                    System.out.println("<===========>");
+                    System.out.println();
+                    System.out.println("<====================================>");
+                    System.out.println();
                     break;
 
                 case 8:
                     clotherStoreController.deleteProduct();
-                    System.out.println("<===========>");
+                    System.out.println();
+                    System.out.println("<====================================>");
+                    System.out.println();
                     break;
 
                 case 9:
                     userController.repairInfor();
-                    System.out.println("<===========>");
+                    System.out.println();
+                    System.out.println("<====================================>");
+                    System.out.println();
                     break;
 
                 case 10:
                     userController.repairPermission(users);
-                    System.out.println("<===========>");
+                    System.out.println();
+                    System.out.println("<====================================>");
+                    System.out.println();
                     break;
 
                 case 11:
                     billController.viewTurnover(bills);
-                    System.out.println("<===========>");
+                    System.out.println();
+                    System.out.println("<====================================>");
+                    System.out.println();
                     break;
 
                 case 12:
                     userController.logout();
-                    System.out.println("<===========>");
+                    System.out.println();
+                    System.out.println("<====================================>");
+                    System.out.println();
                     break;
 
             }
@@ -324,16 +360,17 @@ public class RunMain {
 
         int x;
         do {
-            System.out.println("1. Xem cac san pham cua cua hang");
-            System.out.println("2. Sap xep san pham tang dan theo gia tien");
-            System.out.println("3. Tim kiem san pham");
-            System.out.println("4. Mua hang");
-            System.out.println("5. Xem hoa don");
-            System.out.println("6. Danh gia chat luong san pham");
-            System.out.println("7. Thay doi thong tin ca nhan");
-            System.out.println("8. Dang xuat");
-            System.out.println("0. Thoat");
-            System.out.println("Moi nhap lua chon cua ban: ");
+            System.out.println("Jobs you can do : ");
+            System.out.println("1. See the store's products.");
+            System.out.println("2. Sort products in ascending order by price.");
+            System.out.println("3. Search product.");
+            System.out.println("4. Buy.");
+            System.out.println("5. See the bill.");
+            System.out.println("6. Product quality assessment.");
+            System.out.println("7. Change personal information.");
+            System.out.println("8. Logout.");
+            System.out.println("0. Exit");
+            System.out.println("\nEnter your selection: ");
             x = scanner.nextInt();
 
             List<Clothes> clothes = clotherStoreController.readClothesStoreFromFile(Constants.CLOTHES_STORE_FILE);
@@ -341,35 +378,35 @@ public class RunMain {
             switch (x) {
                 case 1:
                     clotherStoreController.viewProduct(clothes);
-                    System.out.println("<===========>");
+                    System.out.println("<====================================>");
                     break;
                 case 2:
                     clotherStoreController.sortProductWithPrice(clothes);
-                    System.out.println("<===========>");
+                    System.out.println("<====================================>");
                     break;
                 case 3:
                     clotherStoreController.findProduct();
-                    System.out.println("<===========>");
+                    System.out.println("<====================================>");
                     break;
                 case 4:
                     billController.buyProduct();
-                    System.out.println("<===========>");
+                    System.out.println("<====================================>");
                     break;
                 case 5:
                     billController.viewBill(bills);
-                    System.out.println("<===========>");
+                    System.out.println("<====================================>");
                     break;
                 case 6:
                     billController.qualityEvalution(bills);
-                    System.out.println("<===========>");
+                    System.out.println("<====================================>");
                     break;
                 case 7:
                     userController.repairInfor();
-                    System.out.println("<===========>");
+                    System.out.println("<====================================>");
                     break;
                 case 8:
                     userController.logout();
-                    System.out.println("<===========>");
+                    System.out.println("<====================================>");
             }
 
         }while (x != 8 && x != 0) ;

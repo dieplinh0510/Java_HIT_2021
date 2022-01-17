@@ -58,14 +58,14 @@ public class ClotherStoreController {
     }
 
     public  void viewProduct(List<Clothes> clothes) {
-        System.out.println("Thong tin cac san pham cua cua hang: ");
+        System.out.println("Information about products of the store: ");
         for (int i = 0; i < clothes.size(); i++) {
-            System.out.println(clothes.get(i));
+            clothes.get(i).display();
         }
     }
 
     public  void sortProductWithPrice(List<Clothes> clothes1) {
-        System.out.println("San pham sau khi da sap xep theo gia tien: ");
+        System.out.println("Products after sorted by price: ");
         for (int i = 0; i < clothes1.size(); i++) {
             for (int j = i + 1; i < clothes1.size(); i++) {
                 if (clothes1.get(i).getPrice() > clothes1.get(j).getPrice()) {
@@ -84,25 +84,33 @@ public class ClotherStoreController {
 
         List<Clothes> clothes = readClothesStoreFromFile(Constants.CLOTHES_STORE_FILE);
         do{
-            System.out.println("Ban muon tim kiem theo: ");
-            System.out.println("1. Tim kiem theo ten cua san pham.");
-            System.out.println("2. Tim kiem theo mau cua san pham.");
-            System.out.println("3. Tim kiem theo gia tien cua san pham.");
-            System.out.println("0. Thoat.");
-            System.out.println("Moi nhap lua chon cua ban: ");
+            System.out.println("You want to search by: ");
+            System.out.println("1. Search by product name.");
+            System.out.println("2. Search by product color.");
+            System.out.println("3. Search by product price.");
+            System.out.println("0. Exit.");
+            System.out.println("\nEnter your selection: ");
             y = scanner.nextInt();
             switch (y) {
                 case 1:
                     findNameProduct(clothes);
+                    System.out.println("<===============================>");
+                    System.out.println();
                     break;
                 case 2:
                     findColorProduct(clothes);
+                    System.out.println("<===============================>");
+                    System.out.println();
                     break;
                 case 3:
                     findPriceProduct(clothes);
+                    System.out.println("<===============================>");
+                    System.out.println();
                     break;
                 default:
                     System.out.println("Khong co lua chon nay.");
+                    System.out.println("<===============================>");
+                    System.out.println();
                     break;
 
             }
@@ -111,10 +119,10 @@ public class ClotherStoreController {
 
     public  void findNameProduct(List<Clothes> clothes) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Nhap ten san pham can tim: ");
+        System.out.println("Enter the name of the product you are looking for: ");
         String nameInput;
         nameInput = scanner.nextLine();
-        System.out.println("Cac san pham co ten can tim: ");
+        System.out.println("Products whose name to look for is: ");
         for (int i = 0; i < clothes.size(); i++) {
             if (clothes.get(i).getName().compareTo(nameInput) == 0) {
                 System.out.println(clothes.get(i));
@@ -126,9 +134,9 @@ public class ClotherStoreController {
     public  void findColorProduct(List<Clothes> clothes) {
         Scanner scanner = new Scanner(System.in);
         String color;
-        System.out.println("Nhap mau san pham can tim: ");
+        System.out.println("Enter the color of the product you are looking for: ");
         color = scanner.nextLine();
-        System.out.println("Cac san pham co mau " + color + " : ");
+        System.out.println("Products whose color to look for is: ");
         for (int i = 0; i < clothes.size(); i++) {
             if (clothes.get(i).getColor().compareTo(color) == 0) {
                 System.out.println(clothes.get(i));
@@ -139,9 +147,9 @@ public class ClotherStoreController {
     public  void findPriceProduct(List<Clothes> clothes) {
         Scanner scanner = new Scanner(System.in);
         int price;
-        System.out.println("Nhap gia san pham can tim: ");
+        System.out.println("Enter the price of the product you are looking for: ");
         price = scanner.nextInt();
-        System.out.println("Cac san pham co gia " + price + ": ");
+        System.out.println("Products whose color to look for is: ");
         for (int i = 0; i < clothes.size(); i++) {
             if (clothes.get(i).getPrice() == price) {
                 System.out.println(clothes.get(i));
@@ -153,47 +161,38 @@ public class ClotherStoreController {
         List<Clothes> clothes = readClothesStoreFromFile(Constants.CLOTHES_STORE_FILE);
         Scanner scanner = new Scanner(System.in);
         int n;
-        System.out.println("Nhap so san pham can them: "); n = scanner.nextInt();
+        System.out.println("Enter the number of products to add: "); n = scanner.nextInt();
         int id, idType, price, quanlity;
         String name, color, size, material;
-        boolean ok=true;
         for (int i=0; i<n; i++){
             id= clothes.size()+1;
-            for (int j=0; j<clothes.size(); j++){
-                if (id==clothes.get(i).getId()) ok=false; break;
-            }
-            if (ok){
                 scanner.nextLine();
-                System.out.println("Nhap ten cua san pham can them: "); name =scanner.nextLine();
-                System.out.println("Nhap loai ma cua san pham can them: "); idType = scanner.nextInt();
-                System.out.println("Nhap mau sac cua san pham can them : "); color = scanner.nextLine(); scanner.nextLine();
-                System.out.println("Nhap size cua san pham can them: "); size = scanner.nextLine();
-                System.out.println("Nhap gia cua san pham can them: "); price = scanner.nextInt(); scanner.nextLine();
-                System.out.println("Nhap chat lieu cua san pham can them: "); material = scanner.nextLine();
-                System.out.println("Nhap so luong cua san pham can them: "); quanlity = scanner.nextInt();
+                System.out.println("Enter the name of the product to be added: "); name =scanner.nextLine();
+                System.out.println("Enter the id type of the product to be added: "); idType = scanner.nextInt();
+                System.out.println("Enter the color of the product to be added: "); color = scanner.nextLine(); scanner.nextLine();
+                System.out.println("Enter the size of the product to be added: "); size = scanner.nextLine();
+                System.out.println("Enter the price of the product to be added: "); price = scanner.nextInt(); scanner.nextLine();
+                System.out.println("Enter the material of the product to be added: "); material = scanner.nextLine();
+                System.out.println("Enter the quanlity of the product to be added: "); quanlity = scanner.nextInt();
                 clothes.add(new Clothes(id, name, idType, color, size, price, material, quanlity));
                 writeClothesStoreToFile(clothes, Constants.CLOTHES_STORE_FILE);
-            } else {
-                System.out.println("Ma san pham ban muon them da trung voi ma san pham trong gio hang.");
-                addProduct();
             }
 
-        }
     }
 
     public  void repairPriceofProduct(List <Clothes> clothes) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Nhap so san pham can sua gia: "); int n = scanner.nextInt();
+        System.out.println("Enter the number of products to fix the price: "); int n = scanner.nextInt();
         for (int j=0; j<n; j++){
             boolean ok=true;
             int idRepair;
-            System.out.println("Nhap ma san pham can sua gia: ");
+            System.out.println("Enter the id of the product to be priced: ");
             idRepair = scanner.nextInt();
             for (int i=0; i<clothes.size(); i++){
                 if (idRepair ==clothes.get(i).getId()) ok = true; break;
             }
             if (ok){
-                System.out.println("Nhap gia sau khi sua cua san pham: ");
+                System.out.println("Enter the price after editing: ");
                 int priceRepair = scanner.nextInt();
                 for (int i=0; i<clothes.size(); i++){
                     if (clothes.get(i).getId()==idRepair){
@@ -202,7 +201,7 @@ public class ClotherStoreController {
                     }
                 }
             } else {
-                System.out.println("Ma san pham can sua gia khong khop voi ma san pham trong cua hang.");
+                System.out.println("The id of the product that needs fixing the price does not match the id of the product in the store.");
                 repairPriceofProduct(clothes);
             }
 
@@ -213,7 +212,7 @@ public class ClotherStoreController {
         List<Clothes> clothes = readClothesStoreFromFile(Constants.CLOTHES_STORE_FILE);
         List<Clothes> clothes1 = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Nhap ma san pham can xoa: "); int idDele = scanner.nextInt();
+        System.out.println("Enter the id of product to delete: "); int idDele = scanner.nextInt();
         for (int i=0; i<clothes.size(); i++){
             if (idDele != clothes.get(i).getId()){
                 clothes1.add(clothes.get(i));

@@ -88,6 +88,19 @@ public class Clothes {
         this.quantily = quantily;
     }
 
+
+    public void display(){
+        System.out.println("\t\t\t\t\tId clothes         : " + id);
+        System.out.println("\t\t\t\t\tName clothes       : " + name);
+        System.out.println("\t\t\t\t\tId type of clothes : " + idTypeOfClother);
+        System.out.println("\t\t\t\t\tColor clothes      : " + color);
+        System.out.println("\t\t\t\t\tSize clothes       : " + size);
+        System.out.println("\t\t\t\t\tPrice clothes      : " + price);
+        System.out.println("\t\t\t\t\tMaterial clothes   : " + material);
+        System.out.println("\t\t\t\t\tQuantily clothes   : " + quantily);
+        System.out.println();
+    }
+
     @Override
     public String toString() {
         return "Clothes{" +
